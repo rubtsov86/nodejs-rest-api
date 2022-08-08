@@ -40,7 +40,7 @@ const removeContact = async (contactId) => {
     await fs.writeFile(contactsPath, JSON.stringify(newContactsList), "utf8");
     return true;
   } catch (error) {
-    console, log(error);
+    console.log(error);
   }
 };
 
