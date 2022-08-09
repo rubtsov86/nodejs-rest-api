@@ -59,6 +59,8 @@ const addContact = async (body) => {
       JSON.stringify(newContactList, null, 2),
       "utf8"
     );
+
+    return newContact;
   } catch (error) {
     console.log(error);
   }

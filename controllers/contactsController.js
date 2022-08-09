@@ -23,8 +23,11 @@ const findContactById = async (req, res, next) => {
 };
 
 const addNewContact = async (req, res, next) => {
-  await addContact(req.body);
-  res.status(201).json({ message: `Add contact with name ${req.body.name}` });
+  const response = await addContact(req.body);
+  res.status(201).json({
+    message: `Add contact with name ${req.body.name}`,
+    newContact: response,
+  });
 };
 
 const deleteContact = async (req, res, next) => {
