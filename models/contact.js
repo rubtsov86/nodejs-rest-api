@@ -7,7 +7,11 @@ const phoneRegexp = /^\(\d{3}\) \d{3}-\d{4}$/;
 
 const contactSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true, unique: true },
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+      unique: true,
+    },
     email: { type: String, required: true },
     phone: { type: String, required: true, math: phoneRegexp },
     favorite: { type: Boolean, default: false },

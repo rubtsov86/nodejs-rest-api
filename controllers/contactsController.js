@@ -7,8 +7,6 @@ const {
   updateStatusContact,
 } = require("../helpers/contactsAPI");
 
-const { RequestError } = require("../helpers/RequestError");
-
 const getContacts = async (_, res, next) => {
   const contactsList = await listContacts();
   res.status(200).json(contactsList);
@@ -74,9 +72,18 @@ const updateFavoriteById = async (req, res, next) => {
       message: `Ups, we don't find contact with id ${req.params.contactId}, try something else`,
     });
   }
-  res
-    .status(200)
-    .json({ message: `Contact with id ${req.params.contactId} was updated` });
+
+  console.log(String(response.favorite));
+
+  if (String(response.favorite) === req.body.favorite) {
+    return res.status(400).json({
+      message: `Status wasn't changed (this contact has already status favorite:${req.body.favorite}). If wou want to change status - you have ti change your request`,
+    });
+  }
+
+  res.status(200).json({
+    message: `Contact with id ${req.params.contactId} changed status`,
+  });
 };
 
 module.exports = {
