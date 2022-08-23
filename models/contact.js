@@ -15,6 +15,10 @@ const contactSchema = new mongoose.Schema(
     email: { type: String, required: true },
     phone: { type: String, required: true, math: phoneRegexp },
     favorite: { type: Boolean, default: false },
+    owner: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "user",
+    },
   },
   { versionKey: false, timestamps: true }
 );

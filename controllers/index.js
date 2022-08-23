@@ -7,6 +7,10 @@ const {
   updateFavoriteById,
 } = require("./contactsController");
 
+const { signup, login, logout } = require("./authController");
+
+const getCurrent = require("./usersController");
+
 module.exports = {
   getContacts,
   findContactById,
@@ -14,4 +18,8 @@ module.exports = {
   deleteContact,
   updateContactById,
   updateFavoriteById,
+  signup,
+  login,
+  logout,
+  getCurrent,
 };

@@ -7,8 +7,11 @@ const {
   updateStatusContact,
 } = require("../helpers/contactsAPI");
 
-const getContacts = async (_, res, next) => {
-  const contactsList = await listContacts();
+const getContacts = async (req, res, next) => {
+  const { _id } = req.user;
+  const { page = 1, limit = 5 } = req.query;
+  const skip = (page - 1) * limit;
+  const contactsList = await listContacts(_id, skip, limit);
   res.status(200).json(contactsList);
 };
 
@@ -25,7 +28,9 @@ const findContactById = async (req, res, next) => {
 };
 
 const addNewContact = async (req, res, next) => {
-  const response = await addContact(req.body);
+  const { _id } = req.user;
+
+  const response = await addContact({ ...req.body, owner: _id });
   res.status(201).json({
     message: `Add contact with id ${response._id}`,
     newContact: response,
