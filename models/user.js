@@ -26,7 +26,7 @@ const userSchema = Schema(
   { versionKey: false, timestamps: true }
 );
 
-const joiSignupSchema = Joi.object({
+const joiSchema = Joi.object({
   password: Joi.string().min(5).required(),
   email: Joi.string()
     .email({
@@ -36,16 +36,14 @@ const joiSignupSchema = Joi.object({
   subscription: Joi.string(),
 });
 
-const joiLoginSchema = Joi.object({
-  password: Joi.string().min(5).required(),
-  email: Joi.string()
-    .email({
-      tlds: { allow: false },
-    })
-    .required(),
-  subscription: Joi.string(),
+const updateSubscriptionSchema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
 
 const User = model("user", userSchema);
 
-module.exports = { User, joiSignupSchema, joiLoginSchema };
+module.exports = {
+  User,
+  joiSchema,
+  updateSubscriptionSchema,
+};

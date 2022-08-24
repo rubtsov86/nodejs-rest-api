@@ -2,12 +2,21 @@ const express = require("express");
 
 const { ctrlWrapper } = require("../../helpers");
 
-const { auth } = require("../../middlewares");
+const { auth, validationBody } = require("../../middlewares");
 
-const { getCurrent } = require("../../controllers");
+const { updateSubscriptionSchema } = require("../../models/user");
+
+const { users: ctrl } = require("../../controllers");
 
 const router = express.Router();
 
-router.get("/current", auth, ctrlWrapper(getCurrent));
+router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
+
+router.patch(
+  "/",
+  auth,
+  validationBody(updateSubscriptionSchema),
+  ctrlWrapper(ctrl.updateSubscription)
+);
 
 module.exports = router;
