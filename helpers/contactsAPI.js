@@ -1,17 +1,30 @@
 const { Contact } = require("../models/contact");
 
-const listContacts = async () => {
-  const contacts = await Contact.find({});
+const listContacts = async (ownerId, skip, limit, favorite) => {
+  const paramsToFind = favorite
+    ? { owner: ownerId, favorite }
+    : { owner: ownerId };
+
+  const contacts = await Contact.find(paramsToFind, "", {
+    skip,
+    limit: Number(limit),
+  }).populate("owner", "_id email");
   return contacts;
 };
 
-const getContactById = async (contactId) => {
-  const contactToFind = await Contact.findById(contactId);
+const getContactById = async (contactId, ownerId) => {
+  const contactToFind = await Contact.findOne({
+    owner: ownerId,
+    _id: contactId,
+  });
   return contactToFind;
 };
 
-const removeContact = async (contactId) => {
-  const contactToDelete = await Contact.findById(contactId);
+const removeContact = async (contactId, ownerId) => {
+  const contactToDelete = await Contact.findOne({
+    owner: ownerId,
+    _id: contactId,
+  });
   if (!contactToDelete) {
     return false;
   }
@@ -25,8 +38,11 @@ const addContact = async (body) => {
   return contact;
 };
 
-const updateContact = async (contactId, body) => {
-  const contactToUpdate = await Contact.findById(contactId);
+const updateContact = async (contactId, body, ownerId) => {
+  const contactToUpdate = await Contact.findOne({
+    owner: ownerId,
+    _id: contactId,
+  });
 
   if (!contactToUpdate) {
     return false;
@@ -37,8 +53,11 @@ const updateContact = async (contactId, body) => {
   return contactToUpdate;
 };
 
-const updateStatusContact = async (contactId, body) => {
-  const contactToUpdate = await Contact.findById(contactId);
+const updateStatusContact = async (contactId, body, ownerId) => {
+  const contactToUpdate = await Contact.findOne({
+    owner: ownerId,
+    _id: contactId,
+  });
 
   if (!contactToUpdate) {
     return false;
