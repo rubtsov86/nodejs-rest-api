@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+const { BadRequest } = require("http-errors");
 
 const tmpDir = path.join(__dirname, "../", "tmp");
 
@@ -20,8 +21,11 @@ const multerConfig = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   if (!whitelist.includes(file.mimetype)) {
-    req.errorFileType = "type";
-    cb(null, false);
+    cb(
+      new BadRequest(
+        "Wrong type of file. Require only images - .jpeg, .jpg, .png, .webp"
+      )
+    );
   } else {
     cb(null, true);
   }

@@ -6,16 +6,8 @@ const Jimp = require("jimp");
 const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
 
 const addAvatar = async (req, res) => {
-  if (req?.errorFileType) {
-    return res.status(400).json({
-      message: "You can add only images (.png, .jpeg, .jpg or .webp) ",
-    });
-  }
-
   if (!req.file) {
-    return res.status(400).json({
-      message: "You don't add any file",
-    });
+    res.status(400).json({ message: "You don't add any file" });
   }
 
   const { path: tmpUpload, originalname } = req.file;
