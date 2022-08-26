@@ -20,6 +20,7 @@ const multerConfig = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   if (!whitelist.includes(file.mimetype)) {
+    req.errorFileType = "type";
     cb(null, false);
   } else {
     cb(null, true);
