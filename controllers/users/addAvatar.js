@@ -2,7 +2,7 @@ const { User } = require("../../models/user");
 const fs = require("fs/promises");
 const path = require("path");
 
-const avatarsDir = path.resolve("public/avatars");
+const avatarsDir = path.resolve("public", "avatars");
 
 const addAvatar = async (req, res) => {
   const { path: tempUpload, originalname } = req.file;
@@ -10,6 +10,10 @@ const addAvatar = async (req, res) => {
 
   try {
     await fs.rename(tempUpload, resultUpload);
+    const { _id } = req.user;
+    const avatar = path.join("avatars", originalname);
+    await User.findByIdAndUpdate(_id, { $set: { avatarURL: avatar } });
+    res.json({ message: avatar });
   } catch (error) {
     await fs.unlink(tempUpload);
   }
