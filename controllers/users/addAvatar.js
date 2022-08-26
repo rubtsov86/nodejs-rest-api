@@ -5,7 +5,14 @@ const path = require("path");
 const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
 
 const addAvatar = async (req, res) => {
-  const { path: tmpUpload, originalname } = req.file;
+  if (!req.file) {
+    return res.status(400).json({
+      message: "You can add only images (.png, .jpeg, .jpg or .webp) ",
+    });
+  }
+
+  const { path: tmpUpload, originalname, mimetype } = req.file;
+
   const { _id } = req.user;
   const avatarName = `${_id}_${originalname}`;
   try {
@@ -19,7 +26,6 @@ const addAvatar = async (req, res) => {
 
     res.json({ message: avatarURL });
   } catch (error) {
-    console.log("catch");
     await fs.unlink(tmpUpload);
     throw error;
   }
