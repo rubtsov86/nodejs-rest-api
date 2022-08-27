@@ -7,7 +7,7 @@ const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
 
 const addAvatar = async (req, res) => {
   if (!req.file) {
-    res.status(400).json({ message: "You don't add any file" });
+    return res.status(400).json({ message: "You don't add any file" });
   }
 
   const { path: tmpUpload, originalname } = req.file;
