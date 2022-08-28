@@ -35,7 +35,7 @@ describe("test login controller", () => {
   );
 
   test("test request status 200", async () => {
-    const response = await request(app).post("/login").send(data).expect(200);
+    await request(app).post("/login").send(data).expect(200);
   });
 
   test("test return 'token' and type of token is string", async () => {
