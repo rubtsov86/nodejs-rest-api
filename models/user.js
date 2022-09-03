@@ -52,10 +52,19 @@ const updateSubscriptionSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
 
+const resendValidationSchema = Joi.object({
+  email: Joi.string()
+    .email({
+      tlds: { allow: false },
+    })
+    .required(),
+});
+
 const User = model("user", userSchema);
 
 module.exports = {
   User,
   joiSchema,
   updateSubscriptionSchema,
+  resendValidationSchema,
 };
