@@ -12,6 +12,11 @@ const login = async (req, res) => {
   const passwordCompare = user
     ? bcrypt.compareSync(password, user.password)
     : null;
+
+  if (!user.verify) {
+    throw new Unauthorized("Verify your mail");
+  }
+
   if (!user || !passwordCompare) {
     throw new Unauthorized("Email or password is wrong");
   }

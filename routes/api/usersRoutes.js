@@ -4,7 +4,10 @@ const { ctrlWrapper } = require("../../helpers");
 
 const { auth, validationBody, upload } = require("../../middlewares");
 
-const { updateSubscriptionSchema } = require("../../models/user");
+const {
+  updateSubscriptionSchema,
+  resendValidationSchema,
+} = require("../../models/user");
 
 const { users: ctrl } = require("../../controllers");
 
@@ -24,6 +27,14 @@ router.patch(
   auth,
   upload.single("avatar"),
   ctrlWrapper(ctrl.addAvatar)
+);
+
+router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verifyEmail));
+
+router.post(
+  "/verify",
+  validationBody(resendValidationSchema),
+  ctrlWrapper(ctrl.resendVerification)
 );
 
 module.exports = router;
